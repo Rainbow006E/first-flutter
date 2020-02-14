@@ -3,108 +3,122 @@ import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
 
+var stars = Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    Icon(Icons.star, color: Colors.green[500]),
+    Icon(Icons.star, color: Colors.green[500]),
+    Icon(Icons.star, color: Colors.green[500]),
+    Icon(Icons.star, color: Colors.black),
+    Icon(Icons.star, color: Colors.black),
+  ],
+);
+
+final ratings = Container(
+  padding: EdgeInsets.all(10),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      stars,
+      Text(
+        '170 Reviews',
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w800,
+          fontFamily: 'Roboto',
+          letterSpacing: 0.5,
+          fontSize: 20,
+        ),
+      ),
+    ],
+  ),
+);
+
+final descTextStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.w800,
+  fontFamily: 'Roboto',
+  letterSpacing: 0.5,
+  fontSize: 18,
+  height: 2,
+);
+
+// DefaultTextStyle.merge() allows you to create a default text
+// style that is inherited by its child and all subsequent children.
+final iconList = DefaultTextStyle.merge(
+  style: descTextStyle,
+  child: Container(
+    padding: EdgeInsets.all(20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          children: [
+            Icon(Icons.kitchen, color: Colors.green[500]),
+            Text('PREP:'),
+            Text('25 min'),
+          ],
+        ),
+        Column(
+          children: [
+            Icon(Icons.timer, color: Colors.green[500]),
+            Text('COOK:'),
+            Text('1 hr'),
+          ],
+        ),
+        Column(
+          children: [
+            Icon(Icons.restaurant, color: Colors.green[500]),
+            Text('FEEDS:'),
+            Text('4-6'),
+          ],
+        ),
+      ],
+    ),
+  ),
+);
+
+final leftColumn = Container(
+  padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+  child: Column(
+    children: [
+      // titleText,
+      // subTitle,
+      ratings,
+      iconList,
+    ],
+  ),
+);
+
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StartUp Name Generator',
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
-      home: RandomWords(),
-    );
-  }
-}
-
-class RandomWordsState extends State<RandomWords> {
-  final List<WordPair> _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  @override
-  
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('StartUp Name Generator'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
-        ],
-      ),
-      body: _buildSuggestions(),
-    );
-  }
-  
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final List<Widget> divided = ListTile
-            .divideTiles(
-              context: context,
-              tiles: tiles
-            )
-            .toList();
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Saved Suggestions'),
+      title: 'Flutter layout demo',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Flutter layout demo'),
+        ),
+        body: Center(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+            height: 600,
+            child: Card(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 403,
+                    child: leftColumn,
+                  ),
+                  // mainImage,
+                ],
+              ),
             ),
-            body: ListView(children: divided),
-          );
-        },
+          ),
+        )
       ),
     );
   }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if (i.isOdd) return Divider();
-
-        final index = i ~/ 2;
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10));
-        }
-        return _buildRow(_suggestions[index]);
-      }
-    );
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final bool _alreadySaved = _saved.contains(pair);
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: Icon(
-        _alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: _alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        setState(() {
-          if (_alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-    );
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => RandomWordsState();
 }
