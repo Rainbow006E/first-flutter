@@ -89,8 +89,40 @@ final leftColumn = Container(
   ),
 );
 
-class MyApp extends StatelessWidget {
+Widget _buildCard() => SizedBox(
+      height: 210,
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                '1625 Main Street',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              subtitle: Text('My City, CA 99984'),
+              leading: Icon(
+                Icons.restaurant_menu,
+                color: Colors.blue[500],
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                '(408) 555-1212',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              leading: Icon(Icons.contact_phone, color: Colors.blue[500]),
+            ),
+            ListTile(
+              title: Text('costa@example.com'),
+              leading: Icon(Icons.contact_mail, color: Colors.blue[500]),
+            )
+          ],
+        ),
+      ),
+    );
 
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -99,24 +131,25 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Flutter layout demo'),
         ),
-        body: Center(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-            height: 600,
-            child: Card(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 403,
-                    child: leftColumn,
-                  ),
-                  // mainImage,
-                ],
-              ),
-            ),
-          ),
-        )
+        body: _buildCard(),
+        // body: Center(
+        //   child: Container(
+        //     margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+        //     height: 600,
+        //     child: Card(
+        //       child: Row(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Container(
+        //             width: 403,
+        //             child: leftColumn,
+        //           ),
+        //           // mainImage,
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // )
       ),
     );
   }
