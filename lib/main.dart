@@ -116,12 +116,57 @@ Widget _buildCard() => SizedBox(
             ListTile(
               title: Text('costa@example.com'),
               leading: Icon(Icons.contact_mail, color: Colors.blue[500]),
-            )
+            ),
           ],
         ),
       ),
     );
 
+class FavoriteWidget extends StatefulWidget {
+  @override
+  _FavoriteWidgetState createState() => _FavoriteWidgetState();
+}
+  
+class _FavoriteWidgetState extends State<FavoriteWidget>{
+  bool _isFavourited = true;
+  int _favouriteCount = 41;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.all(0),
+          child: IconButton(
+            icon: (_isFavourited? Icon(Icons.star): Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavourite,
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          // child: _buildCard()
+          child: Container(
+            child: Text('$_favouriteCount'),
+          ),
+        ),
+        // _buildCard()
+      ],
+    );
+  }
+
+  void _toggleFavourite() {
+    setState(() {
+      if (_isFavourited) {
+        _favouriteCount -= 1;
+        _isFavourited = false;
+      } else {
+        _favouriteCount += 1;
+        _isFavourited = true;
+      }
+    });
+  }
+}
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -131,25 +176,22 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Flutter layout demo'),
         ),
-        body: _buildCard(),
-        // body: Center(
-        //   child: Container(
-        //     margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-        //     height: 600,
-        //     child: Card(
-        //       child: Row(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Container(
-        //             width: 403,
-        //             child: leftColumn,
-        //           ),
-        //           // mainImage,
-        //         ],
-        //       ),
+        body: Container(
+            padding: EdgeInsets.all(8),
+            child: _buildCard()
+          ),
+        // body: FavoriteWidget()
+        // body: Row(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: [
+        //     // FavoriteWidget(),
+        //     Container(
+        //       padding: EdgeInsets.all(8),
+        //       child: _buildCard(),
         //     ),
-        //   ),
-        // )
+        //     // _buildCard(),
+        //   ],
+        // ),
       ),
     );
   }
